@@ -6,7 +6,7 @@
 <script lang="ts">
   import { paint } from './gradient.ts';
   import { onMount } from 'svelte'
-  import Header from "../Header.svelte";
+  import { getNeighbors } from './life.ts'; // TODO remove
 
 
   let tilesWide = 16;
@@ -20,12 +20,24 @@
 
   const getRandomBoolean = (percentTrue: number) => () => Math.random() * 100 < percentTrue;
 
-  let percentTrue = 10;
-  let grid;
-  function setGrid() {
-    grid = Array.from({ length: tilesHigh }, () => Array.from({ length: tilesWide }, getRandomBoolean(percentTrue)));
+
+  let percentTrue = 50;
+  const percentTrueStep = 5;
+  const percentTrueSteps = Array.from({ length: (100) / percentTrueStep + 1 },
+    (_, index) => percentTrueStep + index * percentTrueStep);
+
+  function getRandomGrid(): boolean[][] {
+    return Array.from({ length: tilesHigh }, () => Array.from({ length: tilesWide }, getRandomBoolean(percentTrue)));
   }
-  setGrid();
+
+  function getEmptyGrid(): boolean[][] {
+    return Array.from({ length: tilesHigh }, () => Array.from({ length: tilesWide }, () => false));
+  }
+
+  let grid = getRandomGrid();
+  $: neighbors = getNeighbors(grid);
+
+  let showNeighbors = false;
 
   let svgUrl, svgCss, svg;
   function updateSvg() {
@@ -123,68 +135,71 @@
 
 
 <div>
-  <h1>Conway's Game of Life</h1>
+  <h1 class="my-10">Conway's Game of Life</h1>
 
-  <div class="flex flex-row gap-5 align-center justify-between max-w-md mx-auto">
-    <input type="range"
-           min="0"
-           max="100"
-           step="5"
-           class="grow"
-           bind:value={percentTrue}
-           on:change={() => {
-             setGrid();
-             updateSvg();
-           }} />
-    <label class="font-sans grow-0">{percentTrue}%</label>
-  </div>
+  <section id="options"
+           class="flex flex-col gap-5 items-center my-10">
+    <label class="font-sans w-1/2" style="min-width: 15rem;">
+      <input type="range"
+             min="0"
+             max="100"
+             step="5"
+             class="range range-sm"
+             bind:value={percentTrue}
+             on:click={() => {
+               grid = getRandomGrid();
+               updateSvg();
+             }} />
+    </label>
+    <div class="w-1/2 flex justify-between text-xs px-2 gap-0 -mt-5" style="min-width: 15rem;">
+      {#each percentTrueSteps as _ }
+        <span>|</span>
+      {/each}
+    </div>
+    <span class="-mt-4">{percentTrue}%</span>
 
-  <canvas
-    width={svgWidth}
-    height={svgHeight}
-    style={svgCss}
-  ></canvas>
+    <label class="btn font-sans h-3 text-xs">
+      <input type="checkbox"
+             class="toggle toggle-xs"
+             bind:checked={showNeighbors}
+      />
+      <span>Show Neighbors</span>
+    </label>
 
-  <div id="tiles">
-    {#each grid as row, i}
-      <div class="tile-row">
-        {#each row as cell, j}
-          <button id="tile-{j}-{i}"
-                  class="tile"
-                  style={`width: ${tileWidth}px; height: ${tileHeight}px`}
-                  on:click={() => {
-                    grid[i][j] = !grid[i][j];
-                    updateSvg();
-                  }}
-                  on:keydown={handleKeydown}
-          ></button>
-        {/each}
-      </div>
-    {/each}
+  </section>
+
+  <div class="relative mx-auto"
+       style={`width: ${svgWidth}px; height: ${svgHeight}px`}>
+    <canvas
+      class="inset-0 absolute"
+      width={svgWidth}
+      height={svgHeight}
+      style={svgCss}
+    ></canvas>
+
+    <div id="tiles" class="inset-0 absolute">
+      {#each grid as row, i}
+        <div class="tile-row">
+          {#each row as cell, j}
+            <button id="tile-{j}-{i}"
+                    class="tile font-mono text-xs"
+                    class:opacity-0={!showNeighbors}
+                    style={`width: ${tileWidth}px; height: ${tileHeight}px`}
+                    on:click={() => {
+                      grid[i][j] = !grid[i][j];
+                      updateSvg();
+                    }}
+                    on:keydown={handleKeydown}
+            >{neighbors[i][j]}</button>
+          {/each}
+        </div>
+      {/each}
+    </div>
   </div>
 
 </div>
 
 <style>
-	canvas, #tiles {
-    margin: 0;
-    padding: 0;
-		position: fixed;
-		left: 50%;
-		top: 50%;
-    transform: translate(-50%, -50%);
-	}
-
-  #tiles {
-    opacity: 0.2;
-  }
-
-  input {
-    margin: 0;
-    padding: 0;
-    border: none;
-    opacity: 1;
-  }
 
   .tile-row {
     padding: 0;
