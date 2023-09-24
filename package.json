@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^10.4.0",
-		"firebase-admin": "^11.10.1"
+		"firebase-admin": "^11.10.1",
+		"gpu.js": "^2.16.0"
 	}
 }
