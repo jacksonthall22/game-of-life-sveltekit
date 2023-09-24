@@ -6,17 +6,20 @@
 <script lang="ts">
   import { paint } from './gradient.ts';
   import { onMount } from 'svelte'
-  import { getNeighbors } from './life.ts'; // TODO remove
+  import { getNeighbors, tick } from './life.ts'; // TODO remove
 
 
-  let tilesWide = 16;
   let tilesHigh = 16;
+  let tilesWide = 32;
 
   let svgHeight = 256;
-  let svgWidth = 256;
+  let svgWidth = 512;
 
   let tileHeight = svgHeight / tilesHigh;
   let tileWidth = svgWidth / tilesWide;
+
+  let isTicking = false;
+  $: console.log('isTicking', isTicking);
 
   const getRandomBoolean = (percentTrue: number) => () => Math.random() * 100 < percentTrue;
 
@@ -120,7 +123,23 @@
     newActiveElement.focus();
   }
 
+  // function tickle() {
+  //   console.log('testing')
+  //   if (isTicking) {
+  //     // Call your tick function here
+  //     grid = tick(grid);
+  //     // Repeat the tick function at a specified interval
+  //   }
+  // }
+
+  function setGrid(newGrid) {
+    grid = newGrid;
+    updateSvg();
+  }
+
 	onMount(() => {
+    // setTimeout(tickle, 100);
+
     const canvas = document.querySelector('canvas');
 		const context = canvas.getContext('2d', {willReadFrequently: true});
 
@@ -128,6 +147,10 @@
     requestAnimationFrame(function loop(t) {
 			requestAnimationFrame(loop);
 			paint(context, t);
+
+      if (isTicking) {
+        setGrid(tick(grid));
+      }
 		});
 	});
 
@@ -145,6 +168,7 @@
              max="100"
              step="5"
              class="range range-sm"
+             disabled={isTicking}
              bind:value={percentTrue}
              on:click={() => {
                grid = getRandomGrid();
@@ -158,13 +182,34 @@
     </div>
     <span class="-mt-4">{percentTrue}%</span>
 
-    <label class="btn font-sans h-3 text-xs">
-      <input type="checkbox"
-             class="toggle toggle-xs"
-             bind:checked={showNeighbors}
-      />
-      <span>Show Neighbors</span>
-    </label>
+    <div class="font-sans text-xs">
+      <label class="btn">
+        <input type="checkbox"
+               class="toggle toggle-xs"
+               bind:checked={showNeighbors}
+        />
+        <span>Show Neighbors</span>
+      </label>
+      <button class="btn"
+              on:click={() => {
+                grid = getEmptyGrid();
+                updateSvg();
+              }}
+      >Clear</button>
+      <button class="btn"
+              on:click={() => {
+                grid = tick(grid);
+                updateSvg();
+              }}
+      >Tick</button>
+      <label class="btn">
+        <input type="checkbox"
+               class="toggle toggle-xs"
+               bind:checked={isTicking}
+        />
+        <span>Tickle</span>
+      </label>
+    </div>
 
   </section>
 
