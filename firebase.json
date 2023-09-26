@@ -10,8 +10,5 @@
       "region": "us-central1",
       "maxInstances": 1
     }
-  },
-  "functions": {
-    "source": "functions"
   }
 }

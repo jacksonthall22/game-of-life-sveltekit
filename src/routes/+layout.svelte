@@ -12,7 +12,7 @@
 	</main>
 
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<p>full code on <a href="https://github.com/jacksonthall22/game-of-life-sveltekit">GitHub</a>.</p>
 	</footer>
 </div>
 
