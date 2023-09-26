@@ -15,10 +15,10 @@ jobs:
           node-version: '16.14.x'
       - name: Install firebase-tools@latest
         run: npm i -g firebase-tools@latest
-      - name: Clean install
-        run: npm ci
-      - name: Build
-        run: npm run build
+      # - name: Clean install
+      #   run: npm ci
+      # - name: Build
+      #   run: npm run build
       - name: Firebase deploy
         run: firebase deploy
         env:
