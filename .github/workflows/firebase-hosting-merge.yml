@@ -25,3 +25,5 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GAME_OF_LIFE_SVELTEKIT }}'
           channelId: live
           projectId: game-of-life-sveltekit
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
