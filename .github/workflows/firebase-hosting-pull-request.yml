@@ -31,10 +31,12 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         with:
           script: |
+            const { exec } = require('@actions/exec')
+
             const pr_number = context.issue.number
 
             const command = `firebase hosting:channel:create ${pr_number}`
-            const { stdout } = exec(command)
+            const { stdout } = exec.exec(command)
             
             // stdout will look something like this:
             //
