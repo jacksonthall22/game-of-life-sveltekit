@@ -11,11 +11,11 @@
   import type { Svg, Rect, } from '@svgdotjs/svg.js';
   import { getEmptyGrid, getRandomGrid, getSVGStringFromCanvas, updateSVGTilesTransparency } from './utils';
 
-  import { browser, dev, building, version } from '$app/environment';
-  console.log(`browser: ${browser}`);
-  console.log(`dev: ${dev}`);
-  console.log(`building: ${building}`);
-  console.log(`version: ${version}`);
+  // import { browser, dev, building, version } from '$app/environment';
+  // console.log(`browser: ${browser}`);
+  // console.log(`dev: ${dev}`);
+  // console.log(`building: ${building}`);
+  // console.log(`version: ${version}`);
 
   function makeSVGCanvas(grid: boolean[][],
                          tileSize: number): { svgCanvas: any, svgTiles: SVG.Rect[] } {
