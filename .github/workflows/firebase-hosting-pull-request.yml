@@ -23,7 +23,7 @@ jobs:
       - name: Clean install
         run: npm ci
       
-      - name: Create preview channel (escaping ":" literals)
+      - name: Create preview channel
         id: create_preview
         uses: actions/github-script@v4
         env:
@@ -31,8 +31,6 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         with:
           script: |
-            const { exec } = require('@actions/exec')
-
             const pr_number = context.issue.number
 
             const command = `firebase hosting:channel:create ${pr_number}`
