@@ -36,7 +36,7 @@ jobs:
             const execa = require('execa')
             const pr_number = context.issue.number
 
-            const command = `firebase hosting:channel:create ${pr_number} --token ${{ process.env.FIREBASE_TOKEN }}`
+            const command = `firebase hosting:channel:create ${pr_number}`
             const { stdout } = await execa(command)
             
             // stdout will look something like this:
