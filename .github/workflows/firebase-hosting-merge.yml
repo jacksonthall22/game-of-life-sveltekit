@@ -17,8 +17,6 @@ jobs:
         run: npm i -g firebase-tools@latest
       - name: Clean install
         run: npm ci
-      # - name: Build
-      #   run: npm run build
       - name: Firebase deploy
         run: firebase deploy
         env:
