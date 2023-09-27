@@ -50,7 +50,7 @@ jobs:
             // 
             // To deploy to this channel, use firebase hosting:channel:deploy 123456.
             // ```
-            console.lot('stdout', stdout')
+            console.log('stdout', stdout)
 
             // We need to extract the channel URL
             const preview_url = stdout.split('\n').find(line => line.includes('Channel URL:')).split(' ').pop().trim()
