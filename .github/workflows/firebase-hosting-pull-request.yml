@@ -19,16 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.17.x'
-      
-      - name: package.json info
-        id: info
-        uses: jaywcjlove/github-action-package@main
 
-      - run: echo "name - ${{ steps.info.outputs.name }}"
-      - run: echo "version - ${{ steps.info.outputs.version }}"
-      - run: echo "description - ${{ steps.info.outputs.description }}"
-      - run: echo "author - ${{ steps.info.outputs.author }}"
-      
       - name: Clean install
         run: npm ci
 
@@ -46,7 +37,10 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         with:
           script: |
-            import {execa} from 'execa'
+            // require execa from its full path to node_modules
+            const execa = require('${{ github.workspace }}/node_modules/execa')
+            
+
             // const execa = require('execa')
 
             const pr_number = context.issue.number
