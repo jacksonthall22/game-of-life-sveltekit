@@ -20,6 +20,15 @@ jobs:
         with:
           node-version: '16.17.x'
       
+      - name: package.json info
+        id: info
+        uses: jaywcjlove/github-action-package@main
+
+      - run: echo "name - ${{ steps.info.outputs.name }}"
+      - run: echo "version - ${{ steps.info.outputs.version }}"
+      - run: echo "description - ${{ steps.info.outputs.description }}"
+      - run: echo "author - ${{ steps.info.outputs.author }}"
+      
       - name: Clean install
         run: npm ci
 
