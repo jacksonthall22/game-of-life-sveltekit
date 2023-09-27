@@ -37,7 +37,7 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         with:
           script: |
-            const exec = require('execa')
+            const execa = require('execa')
 
             const pr_number = context.issue.number
 
