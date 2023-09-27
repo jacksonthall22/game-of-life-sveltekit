@@ -29,6 +29,11 @@ jobs:
       - name: Install execa for Actions script
         run: npm install execa
       
+      - name: package.json info
+        id: info
+        uses: jaywcjlove/github-action-package@main
+      - run: echo "type - ${{ steps.info.outputs.type }}"
+      
       - name: Create preview channel
         id: create_preview
         uses: actions/github-script@v4
