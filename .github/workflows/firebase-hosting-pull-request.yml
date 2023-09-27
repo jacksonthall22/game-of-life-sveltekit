@@ -38,10 +38,7 @@ jobs:
         with:
           script: |
             // require execa from its full path to node_modules
-            const execa = require('${{ github.workspace }}/node_modules/execa')
-            
-
-            // const execa = require('execa')
+            import { execa } = await require('${{ github.workspace }}/node_modules/execa')
 
             const pr_number = context.issue.number
 
