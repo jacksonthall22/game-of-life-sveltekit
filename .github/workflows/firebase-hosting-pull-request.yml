@@ -37,7 +37,7 @@ jobs:
             const pr_number = context.issue.number
 
             const command = `firebase hosting:channel:create ${pr_number}`
-            const { stdout } = exec.exec(command)
+            const { stdout } = await exec.exec(command)
             
             // stdout will look something like this:
             //
