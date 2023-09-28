@@ -40,13 +40,13 @@ jobs:
       # +  hosting:channel: Channel <pr_number> will expire at <timestamp>.
       # +  hosting:channel: Channel URL: https://<project_id>--<pr_number>-<random_hash>.web.app
       # 
-      # To deploy to this channel, use firebase hosting:channel:deploy <pr_number>.        
+      # To deploy to this channel, use firebase hosting:channel:deploy <pr_number>.
 
       - name: Get preview channel URL from stdout
         uses: mathiasvr/command-output@v2.0.0
         id: preview_url
         with:
-          run: echo "${{ steps.create_preview.outputs.stdout }}" | grep -oP 'https://.*(?=\s)'
+          run: echo "${{ steps.create_preview.outputs.stdout }}" | perl -ne 'print "$1\n" if /(https:\/\/[^\s]+)/'
       
       - name: Deploy preview channel
         run: firebase hosting:channel:deploy ${{ github.event.pull_request.number }}
