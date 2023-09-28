@@ -46,7 +46,7 @@ jobs:
         uses: mathiasvr/command-output@v2.0.0
         id: preview_url
         with:
-          run: echo "${{ steps.create_preview.outputs.stdout }}" | perl -ne 'print "$1\n" if /(https:\/\/[^\s]+)/'
+          run: echo '${{ steps.create_preview.outputs.stdout }}' | perl -ne 'print "$1\n" if /(https:\/\/[^\s]+\.web\.app)/'
       
       - name: Deploy preview channel
         run: firebase hosting:channel:deploy ${{ github.event.pull_request.number }}
@@ -54,13 +54,8 @@ jobs:
             FIREBASE_CLI_EXPERIMENTS: webframeworks
             FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
-      - name: Comment on PR with preview channel URL
-        uses: actions/github-script@v4
+      - name: Comment on PR with the preview URL
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `Preview URL: ${steps.preview_url.outputs.stdout}`
-            })
+          message: |
+            [Preview channel deployed! :rocket:](${{ steps.preview_url.outputs.stdout }})
