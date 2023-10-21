@@ -32,15 +32,15 @@ jobs:
         with:
           run: firebase hosting:channel:create ${{ github.event.pull_request.number }}
         env:
-            FIREBASE_CLI_EXPERIMENTS: webframeworks
-            FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      # Output will look like this:
-      # 
-      # +  hosting:channel: Channel <pr_number> has been created on site <project_id>.
-      # +  hosting:channel: Channel <pr_number> will expire at <timestamp>.
-      # +  hosting:channel: Channel URL: https://<project_id>--<pr_number>-<random_hash>.web.app
-      # 
-      # To deploy to this channel, use firebase hosting:channel:deploy <pr_number>.
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        # Output will look like this:
+        # 
+        # +  hosting:channel: Channel <pr_number> has been created on site <project_id>.
+        # +  hosting:channel: Channel <pr_number> will expire at <timestamp>.
+        # +  hosting:channel: Channel URL: https://<project_id>--<pr_number>-<random_hash>.web.app
+        # 
+        # To deploy to this channel, use firebase hosting:channel:deploy <pr_number>.
 
       - name: Get preview channel URL from stdout
         uses: mathiasvr/command-output@v2.0.0
@@ -51,8 +51,8 @@ jobs:
       - name: Deploy preview channel
         run: firebase hosting:channel:deploy ${{ github.event.pull_request.number }}
         env:
-            FIREBASE_CLI_EXPERIMENTS: webframeworks
-            FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
       - name: Comment on PR with the preview URL
         uses: thollander/actions-comment-pull-request@v2
